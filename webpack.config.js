@@ -4,11 +4,39 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const path = require('path');
 
+let plugins = [];
+if(process.env.NODE_ENV === 'production'){
+  plugins = [
+    new HtmlWebpackPlugin({
+      template:'index.ejs',
+      inlineSource:'.(js|css)$',
+      minify:{
+        removeComments: true,
+        removeAttributeQuotes: false,
+        collapseWhitespace: true,
+        minifyJS: true,
+        minifyCSS: true,
+      }
+    }),
+    new ExtractTextPlugin("styles_[chunkhash:8].css"),    
+    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
+    new HtmlWebpackInlineSourcePlugin()
+  ];
+}else{
+  plugins =  [
+    new HtmlWebpackPlugin({
+      template:'index.ejs',
+      // inlineSource:'.(js|css)$'
+    }),
+    new ExtractTextPlugin("styles_[chunkhash:8].css"),
+  ];
+}
+
 module.exports = {
   entry: './src/index.js',
   output: {
     path: __dirname + '/dist',
-    filename: 'index_[chunkhash:8].js',
+    filename: 'index_[hash:8].js',
     libraryTarget:'umd',
     library:'App'
   },
@@ -43,20 +71,5 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json']
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template:'index.ejs',
-      inlineSource:'.(js|css)$',
-      minify:{
-        removeComments: true,
-        removeAttributeQuotes: false,
-        collapseWhitespace: true,
-        minifyJS: true,
-        minifyCSS: true,
-      }
-    }),
-    new ExtractTextPlugin("styles_[chunkhash:8].css"),    
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}}),
-    new HtmlWebpackInlineSourcePlugin()
-  ]  
+  plugins 
 };

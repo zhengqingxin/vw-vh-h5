@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "main": "dist/index.js",
   "scripts": {
+    "start":"webpack-dev-server",
     "watch": "webpack -w",
-    "build": "rm -rf dist/ && webpack && cp -r static ./dist/"
+    "build": "rm -rf dist/ && NODE_ENV='production' webpack -p && cp -r static ./dist/"
   },
   "author": "362965772@qq.com",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "style-loader": "^0.19.0",
     "viewport-units-buggyfill": "^0.6.2",
     "webpack": "^3.8.1",
-    "webpack-bundle-analyzer": "^2.9.1"
+    "webpack-bundle-analyzer": "^2.9.1",
+    "webpack-dev-server": "^2.11.1"
   }
 }

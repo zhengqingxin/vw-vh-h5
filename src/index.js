@@ -5,7 +5,6 @@ require('./style.css');
 
 class App {
   constructor() {
-   
   }
 }
 module.exports = App;
